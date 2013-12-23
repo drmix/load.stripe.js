@@ -1,0 +1,20 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Loader Stripe</title>
+        <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+        <script type="text/javascript" src='load.stripe.js'></script>
+    </head>
+    <body>
+        Click anywhere!<br/>
+        <canvas id='load_stripe' width='800' height='1' style='width:800px;height:3px'/>
+        <script type="text/javascript">
+            $(window).load(function() {
+                var loader = new StripeLoader(document.getElementById('load_stripe').getContext('2d'), {color:[18,61,132]});
+                $(document).mousedown(function(){ loader.Start() }).mouseup(function(){ loader.End() })
+            });
+        </script>
+    </body>
+</html>
+
