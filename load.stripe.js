@@ -28,11 +28,11 @@
     };
 
     var attrToOptions = {
-        "lsj-gauss-weight": ["guassWeight", "num"],
-        "lsj-gauss-width": ["guassWidth", "num"],
-        "lsj-gauss-stop": ["guassStop", "num"],
-        "lsj-gauss-time-move": ["guassTimeMove", "num"],
-        "lsj-gauss-time-vanish": ["guassTimeVanish", "num"],
+        "lsj-gauss-weight": ["gaussWeight", "num"],
+        "lsj-gauss-width": ["gaussWidth", "num"],
+        "lsj-gauss-stop": ["gaussStop", "num"],
+        "lsj-gauss-time-move": ["gaussTimeMove", "num"],
+        "lsj-gauss-time-vanish": ["gaussTimeVanish", "num"],
         "lsj-rect-random": ["rectRandom", "num"],
         "lsj-rect-width": ["rectWidth", "num"],
         "lsj-rect-interval": ["rectInterval", "num"],
