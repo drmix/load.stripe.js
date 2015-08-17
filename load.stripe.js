@@ -27,6 +27,21 @@
         rectColor: "#FFFFFF"
     };
 
+    var attrToOptions = {
+        "lsj-gauss-weight": ["guassWeight", "num"],
+        "lsj-gauss-width": ["guassWidth", "num"],
+        "lsj-gauss-stop": ["guassStop", "num"],
+        "lsj-gauss-time-move": ["guassTimeMove", "num"],
+        "lsj-gauss-time-vanish": ["guassTimeVanish", "num"],
+        "lsj-rect-random": ["rectRandom", "num"],
+        "lsj-rect-width": ["rectWidth", "num"],
+        "lsj-rect-interval": ["rectInterval", "num"],
+        "lsj-rect-time-move": ["rectTimeMove", "num"],
+        "lsj-rect-slowdown": ["rectSlowdown", "num"],
+        "lsj-background-color": ["backgroundColor", "str"],
+        "lsj-rect-color": ["rectColor", "str"]
+    };
+
 
     var S_OFF = 0,
         S_ACTIVE = 1,
@@ -48,7 +63,6 @@
         this.ctx = ctx;
         this.height = ctx.canvas.height;
         this.width = ctx.canvas.width;
-        console.log(ctx.canvas);
 
         this.reset();
     };
@@ -157,7 +171,6 @@
         }
     };
 
-
     Animator.prototype.draw = function(dt) {
         var ctx = this.ctx,
             height = ctx.canvas.height,
@@ -168,7 +181,6 @@
         this.drawBackground(stripe);
         this.drawRectangles(dt, stripe);
     };
-
 
     Animator.prototype.start = function() {
         if (this.state == S_ACTIVE) {
@@ -215,12 +227,32 @@
     };
 
     Animator.prototype.updateOptions = function(options) {
-        this.options = jQuery.extend({}, optionsDefault, options);
+        this.options = jQuery.extend(this.options, options);
     };
 
 
 
     var animations = [];
+
+    var parseAttributes = function(element) {
+        var options = {},
+            $element = $(element);
+
+        $.each(attrToOptions, function(field, descr) {
+            var val = $element.attr(field);
+            if (typeof val === "undefined") {
+                return;
+            }
+
+            if (descr[1] == "num") {
+                val = parseFloat(val);
+            }
+
+            options[descr[0]] = val;
+        });
+
+        return options;
+    }
 
     var getAnimator = function(element) {
         var animator = null;
@@ -233,7 +265,8 @@
         if (animator === null && element && element.getContext) {
             var ctx = element.getContext('2d');
             if (ctx) {
-                animator = new Animator(ctx);
+                var options = parseAttributes(element);
+                animator = new Animator(ctx, options);
                 animations.push([element, animator]);
             }
         }
@@ -250,12 +283,11 @@
         }
         if (index > -1) {
             animations.splice(index, 1);
-            console.log(animations);
         }
     }
 
     if (typeof $ !== "undefined" && $.fn) {
-        $.fn.stripeLoader = function(data) {
+        $.fn.loadStripeJs = function(data) {
             this.filter("canvas").each(function(i, v) {
                 var animator = getAnimator(v);
                 if (animator === null) {
