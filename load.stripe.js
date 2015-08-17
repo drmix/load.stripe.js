@@ -58,7 +58,7 @@
                        };
 
     var Animator = function(ctx, options) {
-        this.options = jQuery.extend({}, optionsDefault, options || {});
+        this.options = $.extend({}, optionsDefault, options || {});
 
         this.ctx = ctx;
         this.height = ctx.canvas.height;
@@ -227,7 +227,7 @@
     };
 
     Animator.prototype.updateOptions = function(options) {
-        this.options = jQuery.extend(this.options, options);
+        this.options = $.extend(this.options, options);
     };
 
 
