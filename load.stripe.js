@@ -22,6 +22,7 @@
         rectInterval: 800,
         rectTimeMove: 1500,
         rectSlowdown: 5,
+        rectEnable: 1,
 
         backgroundColor: "#1751af",
         rectColor: "#FFFFFF"
@@ -38,6 +39,7 @@
         "lsj-rect-interval": ["rectInterval", "num"],
         "lsj-rect-time-move": ["rectTimeMove", "num"],
         "lsj-rect-slowdown": ["rectSlowdown", "num"],
+        "lsj-rect-enable": ["rectEnable", "num"],
         "lsj-background-color": ["backgroundColor", "str"],
         "lsj-rect-color": ["rectColor", "str"]
     };
@@ -58,7 +60,7 @@
                        };
 
     var Animator = function(ctx, options) {
-        this.options = jQuery.extend({}, optionsDefault, options || {});
+        this.options = $.extend({}, optionsDefault, options || {});
 
         this.ctx = ctx;
         this.height = ctx.canvas.height;
@@ -126,6 +128,10 @@
     };
 
     Animator.prototype.drawRectangles = function(dt, stripe) {
+        if (!this.options.rectEnable) {
+            return;
+        }
+
         var o = this.options,
             ctx = this.ctx,
             width = stripe.length,
@@ -227,7 +233,7 @@
     };
 
     Animator.prototype.updateOptions = function(options) {
-        this.options = jQuery.extend(this.options, options);
+        this.options = $.extend(this.options, options);
     };
 
 
@@ -314,4 +320,5 @@
     }
 
 })(window, jQuery);
+
 
