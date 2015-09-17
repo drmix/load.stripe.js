@@ -160,10 +160,15 @@
         ctx.fillStyle = o.rectColor;
 
         var last = 0;
-        for (var i = 0; i + 1 < width && last < rects.length; i++) {
+        for (var i = 0, rlen = rects.length; i + 1 < width && last < rlen; i++) {
             var x1 = transform_map[i],
                 x2 = transform_map[i + 1],
                 x = rects[last];
+
+            while (x < x1 && last + 1 < rlen) {
+                last++;
+                x = rects[last];
+            }
 
             if (x1 <= x && x < x2) {
                 var xReal = i + ((x - x1) / (x2 - x1));
