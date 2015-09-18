@@ -64,9 +64,12 @@
       </h3>
 
       <div>
-          <div>
-              <canvas id="constructed" class="" width='800' height='1' style='width:800px;height:5px'></canvas>
+          <pre id="constructed-code" style="color:#777777; font-size: small; margin-bottom: 8px; height: 160px; overflow: auto;" rows="5"></pre>
+
+          <div style="padding-bottom: 8px;">
+              <canvas id="constructed" width='800' height='1' style='width: 800px; height: 5px'></canvas>
           </div>
+
           <form id="constructor">
           <table>
               <tr>
@@ -383,6 +386,13 @@ $("canvas#busy").loadStripeJs({ backgroundColor: "red" }).loadStripeJs("start")
 
             var demo = $("canvas#constructed");
 
+            var updateCode = function() {
+                var html = $('<div/>').append(demo.clone().removeAttr('id')).html();
+                html = html.replace(/\slsj-(?=[a-z-]+=)/g, "\n        lsj-");
+                html = "<!-- Adjust options below, then copy & paste the code -->\n\n" + html;
+                $("#constructed-code").text(html);
+            }
+
             var cycleDemo = function() {
                 demo.loadStripeJs("remove").loadStripeJs("start");
 
@@ -442,9 +452,12 @@ $("canvas#busy").loadStripeJs({ backgroundColor: "red" }).loadStripeJs("start")
                         }
                     }
                 }
+
+                updateCode();
             });
 
             $("form#constructor input").trigger("change");
+
         });
       </script>
 
