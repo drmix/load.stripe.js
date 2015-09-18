@@ -112,7 +112,7 @@
                       rectColor
                   </td>
                   <td>
-                      <input type="color" name="rectColor" lsj-attr-name='lsj-rect-color' value='#FFFFFF'>
+                      <input type="color" name="rectColor" lsj-attr-name='lsj-rect-color' value='#ffffff' default="#ffffff">
                   </td>
                   <td>
                       <nobr>
@@ -128,7 +128,7 @@
                       backgroundColor
                   </td>
                   <td>
-                      <input type="color" name="backgroundColor" lsj-attr-name='lsj-background-color' value='#156090'>
+                      <input type="color" name="backgroundColor" lsj-attr-name='lsj-background-color' value='#156090' default="#1751af">
                   </td>
                   <td>
                       <nobr>
@@ -144,7 +144,7 @@
                       gaussWeight
                   </td>
                   <td>
-                      <input type="number" name="gaussWeight" lsj-attr-name='lsj-gauss-weight' value='0.8' min="0" max="1" step="0.1">
+                      <input type="number" name="gaussWeight" lsj-attr-name='lsj-gauss-weight' value='0.8' min="0" max="1" step="0.1" default="0.6">
                   </td>
                   <td>
                       <nobr>
@@ -162,7 +162,7 @@
                       gaussWidth
                   </td>
                   <td>
-                      <input type="number" name="gaussWidth" lsj-attr-name='lsj-gauss-width' value='0.05' min="0" max="1" step="0.01">
+                      <input type="number" name="gaussWidth" lsj-attr-name='lsj-gauss-width' value='0.05' min="0" max="1" step="0.01" default="0.05">
                   </td>
                   <td>
                       <nobr>
@@ -178,7 +178,7 @@
                       gaussStop
                   </td>
                   <td>
-                      <input type="number" name="gaussStop" lsj-attr-name='lsj-gauss-stop' value='0.6' min="0" max="1" step="0.1">
+                      <input type="number" name="gaussStop" lsj-attr-name='lsj-gauss-stop' value='0.6' min="0" max="1" step="0.1" default="0.66">
                   </td>
                   <td>
                       <nobr>
@@ -194,7 +194,7 @@
                       gaussTimeMove
                   </td>
                   <td>
-                      <input type="number" name="gaussTimeMove" lsj-attr-name='lsj-gauss-time-move' value='500' min="100" max="10000" step="100">
+                      <input type="number" name="gaussTimeMove" lsj-attr-name='lsj-gauss-time-move' value='500' min="100" max="10000" step="100" default="500">
                   </td>
                   <td>
                       <nobr>
@@ -210,7 +210,7 @@
                       gaussTimeVanish
                   </td>
                   <td>
-                      <input type="number" name="gaussVanish" lsj-attr-name='lsj-gauss-time-vanish' value='200' min="0" max="10000" step="50">
+                      <input type="number" name="gaussVanish" lsj-attr-name='lsj-gauss-time-vanish' value='200' min="0" max="10000" step="50" default="200">
                   </td>
                   <td>
                       <nobr>
@@ -226,7 +226,7 @@
                       rectEnable
                   </td>
                   <td>
-                      <input type="checkbox" name="rectEnable" lsj-attr-name='lsj-rect-enable' checked="checked">
+                      <input type="checkbox" name="rectEnable" lsj-attr-name='lsj-rect-enable' checked="checked" default="true">
                   </td>
                   <td>
                       <nobr>
@@ -242,7 +242,7 @@
                       rectRandom
                   </td>
                   <td>
-                      <input type="checkbox" name="rectRandom" lsj-attr-name='lsj-rect-random' checked="checked">
+                      <input type="checkbox" name="rectRandom" lsj-attr-name='lsj-rect-random' checked="checked" default="true">
                   </td>
                   <td>
                       <nobr>
@@ -258,7 +258,7 @@
                       rectWidth
                   </td>
                   <td>
-                      <input type="number" name="rectWidth" lsj-attr-name='lsj-rect-width' value='80' min="0" max="10000" step="10">
+                      <input type="number" name="rectWidth" lsj-attr-name='lsj-rect-width' value='80' min="0" max="10000" step="10" default="80">
                   </td>
                   <td>
                       <nobr>
@@ -274,7 +274,7 @@
                       rectInterval
                   </td>
                   <td>
-                      <input type="number" name="rectInterval" lsj-attr-name='lsj-rect-interval' value='800' min="0" max="10000" step="50">
+                      <input type="number" name="rectInterval" lsj-attr-name='lsj-rect-interval' value='800' min="0" max="10000" step="50" default="800">
                   </td>
                   <td>
                       <nobr>
@@ -290,7 +290,7 @@
                       rectTimeMove
                   </td>
                   <td>
-                      <input type="number" name="rectTimeMove" lsj-attr-name='lsj-rect-time-move' value='1500' min="0" max="10000" step="50">
+                      <input type="number" name="rectTimeMove" lsj-attr-name='lsj-rect-time-move' value='1500' min="0" max="10000" step="50" default="1500">
                   </td>
                   <td>
                       <nobr>
@@ -306,7 +306,7 @@
                       rectSlowdown
                   </td>
                   <td>
-                      <input type="number" name="rectSlowdown" lsj-attr-name='lsj-rect-slowdown' value='6' min="0" max="100" step="1">
+                      <input type="number" name="rectSlowdown" lsj-attr-name='lsj-rect-slowdown' value='6' min="0" max="100" step="1" default="5">
                   </td>
                   <td>
                       <nobr>
@@ -398,8 +398,9 @@ $("canvas#busy").loadStripeJs({ backgroundColor: "red" }).loadStripeJs("start")
                 $this = $(this);
                 var name = $this.attr("name");
                 var value;
+                var type = $this.attr("type")
 
-                if ($this.attr("type") == "checkbox") {
+                if (type == "checkbox") {
                     value = $this.is(':checked');
                 } else {
                     value = $this.val();
@@ -409,25 +410,36 @@ $("canvas#busy").loadStripeJs({ backgroundColor: "red" }).loadStripeJs("start")
                     return;
                 }
 
-                if ($this.attr("type") == "number") {
-                    value = +value;
-                }
-
                 if (name == "height") {
                     demo.attr("height", 1);
-                    demo.css({height: value});
+                    demo.css({height: +value});
                 } else if (name == "width") {
-                    demo.attr("width", value);
+                    demo.attr("width", +value);
+                    demo.css({width: +value});
                     demo.loadStripeJs("remove").loadStripeJs("start");
                 } else {
                     var options = {}
                     options[name] = value;
-                    console.log(options);
                     demo.loadStripeJs(options);
 
-                    var attrName = $this.attr("lsj-attr-name");
+                    var attrName = $this.attr("lsj-attr-name"),
+                        attrDefault = $this.attr("default"),
+                        isDefault = false;
+
+                    if (typeof attrDefault !== "undefined") {
+                        if (type == "checkbox") {
+                            isDefault = (value == (attrDefault == "true"));
+                        } else {
+                            isDefault = (value == attrDefault);
+                        }
+                    }
+
                     if (typeof attrName !== "undefined") {
-                        demo.attr(attrName, value);
+                        if (isDefault) {
+                            demo.removeAttr(attrName);
+                        } else {
+                            demo.attr(attrName, value);
+                        }
                     }
                 }
             });
