@@ -22,6 +22,7 @@
         rectInterval: 800,
         rectTimeMove: 1500,
         rectSlowdown: 5,
+        rectEnable: 1,
 
         backgroundColor: "#1751af",
         rectColor: "#FFFFFF"
@@ -38,6 +39,7 @@
         "lsj-rect-interval": ["rectInterval", "num"],
         "lsj-rect-time-move": ["rectTimeMove", "num"],
         "lsj-rect-slowdown": ["rectSlowdown", "num"],
+        "lsj-rect-enable": ["rectEnable", "num"],
         "lsj-background-color": ["backgroundColor", "str"],
         "lsj-rect-color": ["rectColor", "str"]
     };
@@ -173,6 +175,10 @@
     }
 
     Animator.prototype.drawRectangles = function(dt, stripe) {
+        if (!this.options.rectEnable) {
+            return;
+        }
+
         var o = this.options,
             ctx = this.ctx,
             width = stripe.length,
@@ -403,4 +409,5 @@
     }
 
 })(window, jQuery);
+
 
