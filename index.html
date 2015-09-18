@@ -30,7 +30,7 @@
       <p>
         Easy-to-use jQuery plugin
         <pre>
- $("canvas").loadStripeJs("start");
+ $("canvas").<b>loadStripeJs</b>("start");
 </pre>
       </p>
       <p>
@@ -54,39 +54,323 @@
       How does it work
       </h3>
       <div>
-          A stripe consists of a background called Gauss (see <a href="https://en.wikipedia.org/wiki/Normal_distribution">Normal distribution</a>):
+          A stripe consists of a background called Gauss (see <a href="https://en.wikipedia.org/wiki/Normal_distribution">Normal distribution</a>).
+          <br>
+          Combined with small rectangles it yields a great animation.
+      </div>
+
+      <h3>
+      Create your own loader
+      </h3>
+
+      <div>
           <div>
-            <canvas id="c-demo-0" class="loader-persist" width='800' height='1' style='width:800px;height:5px' lsj-background-color="#A91200"
-                                                                                                               lsj-gauss-time-move="200"
-                                                                                                               lsj-gauss-weight="0.8"
-                                                                                                               lsj-rect-enable="0"
-            ></canvas>
+              <canvas id="constructed" class="" width='800' height='1' style='width:800px;height:5px'></canvas>
           </div>
-          and small rectangles:
-          <div>
-            <canvas id="c-demo-1" class="loader-persist" width='800' height='1' style='width:800px;height:5px' lsj-background-color="#A91200"
-                                                                                                               lsj-gauss-time-move="200"
-                                                                                                               lsj-gauss-weight="0"
-                                                                                                               lsj-rect-time-move="20000"
-                                                                                                               lsj-rect-interval="8000"
-                                                                                                               lsj-rect-slowdown="0"
-                                                                                                               lsj-rect-width="5"
-            ></canvas>
-          </div>
-          Combined together they yield a great animation
-            <canvas id="c-demo-1" class="loader-repeat" width='800' height='1' style='width:800px;height:5px' lsj-background-color="#A91200"
-                                                                                                              lsj-gauss-time-move="200"
-                                                                                                              lsj-gauss-weight="0.6"
-                                                                                                              lsj-rect-slowdown="3"
-                                                                                                              lsj-rect-width="40"
-            ></canvas>
+          <form id="constructor">
+          <table>
+              <tr>
+                  <th>
+                      Option
+                  </th>
+                  <th>
+                      Value
+                  </th>
+                  <th>
+                      Attribute
+                  </th>
+                  <th>
+                      Description
+                  </th>
+              </tr>
+              <tr>
+                  <td>
+                      height
+                  </td>
+                  <td>
+                      <input type="number" name="height" value='5' lsj-restart="1" min="1" max="100">
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      width
+                  </td>
+                  <td>
+                      <input type="number" name="width" value='800' lsj-restart="1" min="50" max="1000">
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      rectColor
+                  </td>
+                  <td>
+                      <input type="color" name="rectColor" lsj-attr-name='lsj-rect-color' value='#FFFFFF'>
+                  </td>
+                  <td>
+                      <nobr>
+                          lsj-rect-color
+                      </nobr>
+                  </td>
+                  <td>
+                      Rectangles color
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      backgroundColor
+                  </td>
+                  <td>
+                      <input type="color" name="backgroundColor" lsj-attr-name='lsj-background-color' value='#156090'>
+                  </td>
+                  <td>
+                      <nobr>
+                          lsj-background-color
+                      </nobr>
+                  </td>
+                  <td>
+                      Gauss color
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      gaussWeight
+                  </td>
+                  <td>
+                      <input type="number" name="gaussWeight" lsj-attr-name='lsj-gauss-weight' value='0.8' min="0" max="1" step="0.1">
+                  </td>
+                  <td>
+                      <nobr>
+                          lsj-gauss-weight
+                      </nobr>
+                  </td>
+                  <td>
+                      How visible is the Gauss.
+                      <br>
+                      Set to 0 for uniform background
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      gaussWidth
+                  </td>
+                  <td>
+                      <input type="number" name="gaussWidth" lsj-attr-name='lsj-gauss-width' value='0.05' min="0" max="1" step="0.01">
+                  </td>
+                  <td>
+                      <nobr>
+                          lsj-gauss-width
+                      </nobr>
+                  </td>
+                  <td>
+                      Width of the Gauss.
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      gaussStop
+                  </td>
+                  <td>
+                      <input type="number" name="gaussStop" lsj-attr-name='lsj-gauss-stop' value='0.6' min="0" max="1" step="0.1">
+                  </td>
+                  <td>
+                      <nobr>
+                          lsj-gauss-stop
+                      </nobr>
+                  </td>
+                  <td>
+                      Stop point of the Gauss.
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      gaussTimeMove
+                  </td>
+                  <td>
+                      <input type="number" name="gaussTimeMove" lsj-attr-name='lsj-gauss-time-move' value='500' min="100" max="10000" step="100">
+                  </td>
+                  <td>
+                      <nobr>
+                          lsj-gauss-time-move
+                      </nobr>
+                  </td>
+                  <td>
+                      Time before the Gauss reaches the stop point
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      gaussTimeVanish
+                  </td>
+                  <td>
+                      <input type="number" name="gaussVanish" lsj-attr-name='lsj-gauss-time-vanish' value='200' min="0" max="10000" step="50">
+                  </td>
+                  <td>
+                      <nobr>
+                          lsj-gauss-time-vanish
+                      </nobr>
+                  </td>
+                  <td>
+                      Time for the Gauss to vanish
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      rectEnable
+                  </td>
+                  <td>
+                      <input type="checkbox" name="rectEnable" lsj-attr-name='lsj-rect-enable' checked="checked">
+                  </td>
+                  <td>
+                      <nobr>
+                          lsj-rect-enable
+                      </nobr>
+                  </td>
+                  <td>
+                      Show small cute rectangles
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      rectRandom
+                  </td>
+                  <td>
+                      <input type="checkbox" name="rectRandom" lsj-attr-name='lsj-rect-random' checked="checked">
+                  </td>
+                  <td>
+                      <nobr>
+                          lsj-rect-random
+                      </nobr>
+                  </td>
+                  <td>
+                      Rectangles appear at random positions each time
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      rectWidth
+                  </td>
+                  <td>
+                      <input type="number" name="rectWidth" lsj-attr-name='lsj-rect-width' value='80' min="0" max="10000" step="10">
+                  </td>
+                  <td>
+                      <nobr>
+                          lsj-rect-width
+                      </nobr>
+                  </td>
+                  <td>
+                      Width of rectangles
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      rectInterval
+                  </td>
+                  <td>
+                      <input type="number" name="rectInterval" lsj-attr-name='lsj-rect-interval' value='800' min="0" max="10000" step="50">
+                  </td>
+                  <td>
+                      <nobr>
+                          lsj-rect-interval
+                      </nobr>
+                  </td>
+                  <td>
+                      Time interval between consequent rectangles
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      rectTimeMove
+                  </td>
+                  <td>
+                      <input type="number" name="rectTimeMove" lsj-attr-name='lsj-rect-time-move' value='1500' min="0" max="10000" step="50">
+                  </td>
+                  <td>
+                      <nobr>
+                          lsj-rect-time-move
+                      </nobr>
+                  </td>
+                  <td>
+                      Time for rectangle to fly from left to right
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      rectSlowdown
+                  </td>
+                  <td>
+                      <input type="number" name="rectSlowdown" lsj-attr-name='lsj-rect-slowdown' value='6' min="0" max="100" step="1">
+                  </td>
+                  <td>
+                      <nobr>
+                          lsj-rect-slowdown
+                      </nobr>
+                  </td>
+                  <td>
+                      How much rectangles are slowed down by the Gauss
+                  </td>
+              </tr>
+          </table>
+          </form>
+      </div>
+
+      <h3>
+      Commands
+      </h3>
+
+      <div>
+<pre>
+$("canvas").loadStripeJs(<b>"start"</b>);      // start animation.
+
+$("canvas").loadStripeJs(<b>"stop"</b>);       // stop animation.
+
+$("canvas").loadStripeJs(<b>"remove"</b>);     // remove animator instantly and completely.
+                                        // the canvas gets cleared.
+
+$("canvas").loadStripeJs(<b>{ ... }</b>);      // set options.
+</pre>
+      </div>
+
+      <h3>
+      Examples
+      </h3>
+
+      <div>
+          You can specify options either by attribute:
+
+<pre>
+&lt;canvas id="busy"
+        <b>lsj-background-color</b>="#F7DB7D"
+        <b>lsj-gauss-weight</b>="0.90"
+        width='800'                     // number of pixel in stripe
+        height='1'                      // should always be 1
+        style='width:800px;height:5px'  // this is how you'll see it
+&gt;&lt;/canvas&gt;
+</pre>
+          or through JavaScript:
+<pre>
+$("canvas#busy").loadStripeJs({ <b>backgroundColor</b>: "red" });
+</pre>
+          Also you can chain calls to loadStripeJs function:
+<pre>
+// override background and start
+$("canvas#busy").loadStripeJs({ backgroundColor: "red" }).loadStripeJs("start")
+</pre>
       </div>
 
       <script type="text/javascript">
         $(document).ready(function() {
+            $("canvas.loader-persist").loadStripeJs("start");
+
             var cycle = function() {
                 $("canvas.loader-repeat").loadStripeJs("start");
-                $("canvas.loader-persist").loadStripeJs("start");
 
                 setTimeout(function() {
                     $("canvas.loader-repeat").loadStripeJs("stop");
@@ -95,6 +379,60 @@
 
             setInterval(cycle, 2000);
             cycle();
+
+
+            var demo = $("canvas#constructed");
+
+            var cycleDemo = function() {
+                demo.loadStripeJs("remove").loadStripeJs("start");
+
+                setTimeout(function() {
+                    demo.loadStripeJs("stop");
+                }, 2000);
+            }
+
+            setInterval(cycleDemo, 2700);
+            cycleDemo();
+
+            $("form#constructor input").change(function() {
+                $this = $(this);
+                var name = $this.attr("name");
+                var value;
+
+                if ($this.attr("type") == "checkbox") {
+                    value = $this.is(':checked');
+                } else {
+                    value = $this.val();
+                }
+
+                if (!name || typeof value === "undefined") {
+                    return;
+                }
+
+                if ($this.attr("type") == "number") {
+                    value = +value;
+                }
+
+                if (name == "height") {
+                    demo.attr("height", 1);
+                    demo.css({height: value});
+                } else if (name == "width") {
+                    demo.attr("width", value);
+                    demo.loadStripeJs("remove").loadStripeJs("start");
+                } else {
+                    var options = {}
+                    options[name] = value;
+                    console.log(options);
+                    demo.loadStripeJs(options);
+
+                    var attrName = $this.attr("lsj-attr-name");
+                    if (typeof attrName !== "undefined") {
+                        demo.attr(attrName, value);
+                    }
+                }
+            });
+
+            $("form#constructor input").trigger("change");
         });
       </script>
 
