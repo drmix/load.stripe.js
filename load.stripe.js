@@ -111,11 +111,9 @@
                     return;
                 }
                 if (typeof spec.min !== "undefined" && value < spec.min) {
-                    console.log("MIN", value, spec.min);
                     value = spec.min;
                 }
                 if (typeof spec.max !== "undefined" && value > spec.max) {
-                    console.log("MAX", value, spec.max);
                     value = spec.max;
                 }
             } else if (spec.type == "bool") {
