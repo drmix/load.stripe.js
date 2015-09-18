@@ -31,19 +31,8 @@
         Easy-to-use jQuery plugin
         <pre>
  $("canvas").loadStripeJs("start");
-
- setTimeout(function() {
-     $("canvas").loadStripeJs("stop");
- }, 800);</pre>
+</pre>
       </p>
-      <div>
-        <canvas id="c2" class="loader-repeat" width='800' height='1' style='width:800px;height:5px' lsj-background-color="red"
-                                                                                                    lsj-gauss-time-move="200"
-                                                                                                    lsj-gauss-weight="0.90"
-        ></canvas>
-      </div>
-
-      <br/>
       <p>
         <div>
           <canvas id="c-button" width='800' height='1' style='width:800px;height:5px' lsj-background-color="#F7DB7D"
@@ -61,14 +50,43 @@
         </button>
       </p>
 
-      <h2>
-      Enjoy
-      </h2>
+      <h3>
+      How does it work
+      </h3>
+      <div>
+          A stripe consists of a background called Gauss (see <a href="https://en.wikipedia.org/wiki/Normal_distribution">Normal distribution</a>):
+          <div>
+            <canvas id="c-demo-0" class="loader-persist" width='800' height='1' style='width:800px;height:5px' lsj-background-color="#A91200"
+                                                                                                               lsj-gauss-time-move="200"
+                                                                                                               lsj-gauss-weight="0.8"
+                                                                                                               lsj-rect-enable="0"
+            ></canvas>
+          </div>
+          and small rectangles:
+          <div>
+            <canvas id="c-demo-1" class="loader-persist" width='800' height='1' style='width:800px;height:5px' lsj-background-color="#A91200"
+                                                                                                               lsj-gauss-time-move="200"
+                                                                                                               lsj-gauss-weight="0"
+                                                                                                               lsj-rect-time-move="20000"
+                                                                                                               lsj-rect-interval="8000"
+                                                                                                               lsj-rect-slowdown="0"
+                                                                                                               lsj-rect-width="5"
+            ></canvas>
+          </div>
+          Combined together they yield a great animation
+            <canvas id="c-demo-1" class="loader-repeat" width='800' height='1' style='width:800px;height:5px' lsj-background-color="#A91200"
+                                                                                                              lsj-gauss-time-move="200"
+                                                                                                              lsj-gauss-weight="0.6"
+                                                                                                              lsj-rect-slowdown="3"
+                                                                                                              lsj-rect-width="40"
+            ></canvas>
+      </div>
 
       <script type="text/javascript">
         $(document).ready(function() {
             var cycle = function() {
                 $("canvas.loader-repeat").loadStripeJs("start");
+                $("canvas.loader-persist").loadStripeJs("start");
 
                 setTimeout(function() {
                     $("canvas.loader-repeat").loadStripeJs("stop");
@@ -79,6 +97,10 @@
             cycle();
         });
       </script>
+
+      <h2>
+      Enjoy
+      </h2>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/drmix/load.stripe.js">load.stripe.js</a> is maintained by <a href="https://github.com/drmix">drmix</a>.</span>
