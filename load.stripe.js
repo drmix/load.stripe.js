@@ -57,6 +57,27 @@
                            setTimeout(function() { callback(new Date().getTime()); }, 1000/60 );
                        };
 
+
+    var cache_canvas = null,
+        cache_ctx = null;
+
+    var compileColor = function(color) {
+        if (cache_ctx === null) {
+            cache_canvas = document.createElement('canvas');
+            cache_canvas.width = 1;
+            cache_canvas.height = 1;
+            cache_ctx = cache_canvas.getContext('2d');
+        }
+
+        cache_ctx.fillStyle = color;
+        cache_ctx.clearRect(0, 0, 1, 1);
+        cache_ctx.fillRect(0, 0, 1, 1);
+
+        var data = cache_ctx.getImageData(0, 0, 1, 1);
+        return data
+    }
+
+
     var Animator = function(ctx, options) {
         this.options = $.extend({}, optionsDefault, options || {});
 
@@ -110,20 +131,45 @@
             height = this.height,
             len = stripe.length;
 
-        ctx.clearRect(0, 0, width, height);
+        var data = this._getCachedImageData(o.backgroundColor),
+            pos = 0;
 
-        ctx.fillStyle = o.backgroundColor;
-        ctx.fillRect(0, 0, width, height);
-
-        var data = ctx.getImageData(0, 0, width, height);
         for (var y = 0; y < height; y++) {
             for (var x = 0; x < len; x++) {
                 var alpha = Math.floor(stripe[x] * 255);
-                data.data[y * 4 * width + x * 4 + 3] = alpha;
+                data.data[pos + 3] = alpha;
+                pos += 4;
             }
         }
+
         ctx.putImageData(data, 0, 0);
     };
+
+
+    Animator.prototype._getCachedImageData = function(color) {
+        if (this._cache_image_data && this._cache_image_data[0] === color) {
+            return this._cache_image_data[1];
+        }
+
+        var width = this.width,
+            height = this.height,
+            data = this.ctx.createImageData(width, height),
+            sample = compileColor(color),
+            pos = 0;
+
+        for (var y = 0; y < height; y++) {
+            for (var x = 0; x < width; x++) {
+                for (var i = 0; i < 4; i++) {
+                    data.data[pos + i] = sample[i];
+                }
+                pos += 4;
+            }
+        }
+
+        this._cache_image_data = [color, data]
+
+        return data
+    }
 
     Animator.prototype.drawRectangles = function(dt, stripe) {
         var o = this.options,
