@@ -17,12 +17,12 @@
         gaussTimeMove: 500,
         gaussTimeVanish: 200,
 
+        rectEnable: 1,
         rectRandom: 1,
         rectWidth: 80,
         rectInterval: 800,
         rectTimeMove: 1500,
         rectSlowdown: 5,
-        rectEnable: 1,
 
         backgroundColor: "#1751af",
         rectColor: "#FFFFFF"
@@ -34,12 +34,12 @@
         "lsj-gauss-stop": ["gaussStop", "num"],
         "lsj-gauss-time-move": ["gaussTimeMove", "num"],
         "lsj-gauss-time-vanish": ["gaussTimeVanish", "num"],
-        "lsj-rect-random": ["rectRandom", "num"],
+        "lsj-rect-enable": ["rectEnable", "bool"],
+        "lsj-rect-random": ["rectRandom", "bool"],
         "lsj-rect-width": ["rectWidth", "num"],
         "lsj-rect-interval": ["rectInterval", "num"],
         "lsj-rect-time-move": ["rectTimeMove", "num"],
         "lsj-rect-slowdown": ["rectSlowdown", "num"],
-        "lsj-rect-enable": ["rectEnable", "num"],
         "lsj-background-color": ["backgroundColor", "str"],
         "lsj-rect-color": ["rectColor", "str"]
     };
@@ -341,6 +341,8 @@
 
             if (descr[1] == "num") {
                 val = parseFloat(val);
+            } else if (descr[1] == "bool") {
+                val = !!val && (val != "false") && (val != "0");
             }
 
             options[descr[0]] = val;
