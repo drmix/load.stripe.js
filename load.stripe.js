@@ -137,7 +137,7 @@
             pos = 0;
 
         for (var y = 0; y < height; y++) {
-            for (var x = 0; x < len; x++) {
+            for (var x = 0; x < width; x++) {
                 var alpha = Math.floor(stripe[x] * 255);
                 data.data[pos + 3] = alpha;
                 pos += 4;
@@ -162,7 +162,7 @@
         for (var y = 0; y < height; y++) {
             for (var x = 0; x < width; x++) {
                 for (var i = 0; i < 4; i++) {
-                    data.data[pos + i] = sample[i];
+                    data.data[pos + i] = sample.data[i];
                 }
                 pos += 4;
             }
