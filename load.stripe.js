@@ -92,6 +92,7 @@
         var o = this.options;
 
         this.state = S_OFF;
+        this.needAnimationFrame = false;
         this.timeStart = null;
         this.rectSeed = o.rectRandom ? Math.round(o.rectInterval * Math.random()) : 0;
 
@@ -233,42 +234,38 @@
         this.drawRectangles(dt, stripe);
     };
 
+    Animator.prototype.doAnimation = function(time) {
+        var o = this.options;
+
+        if (this.timeStart === null || time < this.timeStart) {
+            this.timeStart = time;
+        }
+        var dt = time - this.timeStart;
+
+        if (this.state == S_OFF || (this.state == S_VANISH && dt > (this.dtLast + o.gaussTimeVanish))) {
+            this.reset();
+            this.needAnimationFrame = false;
+            return;
+        }
+        if (this.state == S_ACTIVE) {
+            this.dtLast = dt;
+        }
+
+        this.draw(dt);
+
+        this.needAnimationFrame = true;
+    }
+
     Animator.prototype.start = function() {
         if (this.state == S_ACTIVE) {
             return;
         }
+
         this.reset();
         this.state = S_ACTIVE;
+        this.needAnimationFrame = true;
 
-        var o = this.options,
-            self = this;
-
-
-        var handler = function(time) {
-            if (typeof time === "undefined" || self._handler !== handler) {
-                return;
-            }
-
-            if (self.timeStart === null || time < self.timeStart) {
-                self.timeStart = time;
-            }
-            var dt = time - self.timeStart;
-
-            if (self.state == S_OFF || (self.state == S_VANISH && dt > (self.dtLast + o.gaussTimeVanish))) {
-                self.reset();
-                return;
-            }
-            if (self.state == S_ACTIVE) {
-                self.dtLast = dt;
-            }
-
-            self.draw(dt);
-
-            requestFrame(handler);
-        }
-        self._handler = handler;
-
-        requestFrame(handler);
+        requireAnimation();
     };
 
     Animator.prototype.stop = function() {
@@ -280,6 +277,47 @@
     Animator.prototype.updateOptions = function(options) {
         this.options = $.extend(this.options, options);
     };
+
+
+
+    var waiting = false;
+
+    var fps = 65;
+    var _timeLast = null;
+
+    var handler = function(time) {
+        waiting = false;
+
+        if (_timeLast !== null && time >= _timeLast && time < _timeLast + (1000/fps)) {
+            requireAnimation();
+            return;
+        }
+        _timeLast = time;
+
+        if (typeof time === "undefined") {
+            return;
+        }
+
+        var someoneWorking = false;
+        for (var i = 0, len = animations.length; i < len; i++) {
+            var item = animations[i][1];
+            if (item.needAnimationFrame) {
+                item.doAnimation(time);
+                someoneWorking = true;
+            }
+        }
+
+        if (someoneWorking) {
+            requireAnimation();
+        }
+    }
+
+    var requireAnimation = function() {
+        if (!waiting) {
+            requestFrame(handler);
+            waiting = true;
+        }
+    }
 
 
 
