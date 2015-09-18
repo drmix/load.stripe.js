@@ -13,12 +13,12 @@
     var optionsDefault = {
         gaussWeight: 0.6,
         gaussWidth: 0.05,
-        gaussStop: 2/3,
+        gaussStop: 0.66,
         gaussTimeMove: 500,
         gaussTimeVanish: 200,
 
-        rectEnable: 1,
-        rectRandom: 1,
+        rectEnable: true,
+        rectRandom: true,
         rectWidth: 80,
         rectInterval: 800,
         rectTimeMove: 1500,
@@ -28,21 +28,105 @@
         rectColor: "#FFFFFF"
     };
 
-    var attrToOptions = {
-        "lsj-gauss-weight": ["gaussWeight", "num"],
-        "lsj-gauss-width": ["gaussWidth", "num"],
-        "lsj-gauss-stop": ["gaussStop", "num"],
-        "lsj-gauss-time-move": ["gaussTimeMove", "num"],
-        "lsj-gauss-time-vanish": ["gaussTimeVanish", "num"],
-        "lsj-rect-enable": ["rectEnable", "bool"],
-        "lsj-rect-random": ["rectRandom", "bool"],
-        "lsj-rect-width": ["rectWidth", "num"],
-        "lsj-rect-interval": ["rectInterval", "num"],
-        "lsj-rect-time-move": ["rectTimeMove", "num"],
-        "lsj-rect-slowdown": ["rectSlowdown", "num"],
-        "lsj-background-color": ["backgroundColor", "str"],
-        "lsj-rect-color": ["rectColor", "str"]
-    };
+    var optionsInfo = {
+        "gaussWeight": {
+            attr: "lsj-gauss-weight",
+            type: "number",
+            min:  0,
+            max:  1
+        },
+        "gaussWidth": {
+            attr: "lsj-gauss-width",
+            type: "number",
+            min:  0,
+            max:  1
+        },
+        "gaussStop": {
+            attr: "lsj-gauss-stop",
+            type: "number",
+            min:  0,
+            max:  1
+        },
+        "gaussTimeMove": {
+            attr: "lsj-gauss-time-move",
+            type: "number",
+            min:  0,
+        },
+        "gaussTimeVanish": {
+            attr: "lsj-gauss-time-vanish",
+            type: "number",
+            min:  0,
+        },
+        "rectEnable": {
+            attr: "lsj-rect-enable",
+            type: "bool",
+        },
+        "rectRandom": {
+            attr: "lsj-rect-random",
+            type: "bool",
+        },
+        "rectWidth": {
+            attr: "lsj-rect-width",
+            type: "number",
+            min:  0
+        },
+        "rectInterval": {
+            attr: "lsj-rect-interval",
+            type: "number",
+            min:  0
+        },
+        "rectTimeMove": {
+            attr: "lsj-time-move",
+            type: "number",
+            min:  0
+        },
+        "rectSlowdown": {
+            attr: "lsj-slowdown",
+            type: "number",
+            min:  0,
+            max:  100
+        },
+        "backgroundColor": {
+            attr: "lsj-background-color",
+            type: "color"
+        },
+        "rectColor": {
+            attr: "lsj-rect-color",
+            type: "color"
+        }
+    }
+
+    var refineOptions = function(options) {
+        var result = {};
+        $.each(options, function(k, v) {
+            var spec = optionsInfo[k];
+            if (typeof spec === "undefined") {
+                return;
+            }
+
+            var value = v;
+            if (spec.type == "number") {
+                value = parseFloat(value);
+                if (isNaN(value)) {
+                    return;
+                }
+                if (typeof spec.min !== "undefined" && value < spec.min) {
+                    console.log("MIN", value, spec.min);
+                    value = spec.min;
+                }
+                if (typeof spec.max !== "undefined" && value > spec.max) {
+                    console.log("MAX", value, spec.max);
+                    value = spec.max;
+                }
+            } else if (spec.type == "bool") {
+                value = !!value && (value != "false") && (value != "0");
+            }
+
+            result[k] = value;
+        });
+
+        return result;
+    }
 
 
     var S_OFF = 0,
@@ -333,21 +417,16 @@
         var options = {},
             $element = $(element);
 
-        $.each(attrToOptions, function(field, descr) {
-            var val = $element.attr(field);
+        $.each(optionsInfo, function(key, spec) {
+            var val = $element.attr(spec.attr);
             if (typeof val === "undefined") {
                 return;
             }
 
-            if (descr[1] == "num") {
-                val = parseFloat(val);
-            } else if (descr[1] == "bool") {
-                val = !!val && (val != "false") && (val != "0");
-            }
-
-            options[descr[0]] = val;
+            options[key] = val;
         });
 
+        options = refineOptions(options);
         return options;
     }
 
@@ -403,7 +482,8 @@
                 }
 
                 if (typeof data !== "string") {
-                    animator.updateOptions(data);
+                    var refined = refineOptions(data);
+                    animator.updateOptions(refined);
                 }
             });
             return this;
