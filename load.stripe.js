@@ -76,12 +76,12 @@
             min:  0
         },
         "rectTimeMove": {
-            attr: "lsj-time-move",
+            attr: "lsj-rect-time-move",
             type: "number",
             min:  0
         },
         "rectSlowdown": {
-            attr: "lsj-slowdown",
+            attr: "lsj-rect-slowdown",
             type: "number",
             min:  0,
             max:  100
